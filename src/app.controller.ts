@@ -1,22 +1,14 @@
-import { Controller, Get, Post, Put } from '@nestjs/common';
-import { AppService } from './app.service';
+import { Controller, Request, Post, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
-@Controller('app')
+@ApiTags('user')
+@Controller('user')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
-  @Get('getHello')
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
-  @Post('postHello')
-  postHello(): string {
-    return this.appService.getHello();
-  }
-
-  @Put('putHello/:id')
-  putHello(): string {
-    return 'putHello';
+  @UseGuards(AuthGuard('local'))
+  @ApiOperation({ summary: '登录' })
+  @Post('login')
+  async login(@Request() req) {
+    return req.user;
   }
 }

@@ -1,6 +1,6 @@
 // user/user.entity.ts
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert } from 'typeorm';
-import * as bcrypt from 'bcryptjs';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+// import * as bcrypt from 'bcryptjs';
 
 @Entity('user')
 export class UserEntity {
@@ -8,16 +8,16 @@ export class UserEntity {
   userId: number;
 
   @Column({ length: 50 })
-  phone: string;
+  username: string;
 
-  @Column({ select: false })
+  @Column()
   password: string;
 
   @Column('tinyint')
   type: number;
 
-  @BeforeInsert()
-  async encryptPwd() {
-    this.password = bcrypt.hashSync(this.password);
-  }
+  // @BeforeInsert()
+  // async encryptPwd() {
+  //   this.password = bcrypt.hashSync(this.password);
+  // }
 }

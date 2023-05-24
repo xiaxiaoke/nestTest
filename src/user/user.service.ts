@@ -11,26 +11,27 @@ export class UserService {
   ) {}
 
   async register(createUser: Partial<UserEntity>) {
-    const { phone } = createUser;
+    const { username } = createUser;
 
     const existUser = await this.userRepository.findOne({
-      where: { phone },
+      where: { username },
     });
+
     if (existUser) {
       throw new HttpException('用户已存在', HttpStatus.BAD_REQUEST);
     }
 
     const newUser = await this.userRepository.create(createUser);
     this.userRepository.save(newUser);
-    return await this.userRepository.findOne({ where: { phone } });
+    return await this.userRepository.findOne({ where: { username } });
   }
 
   async getUsers() {
     return this.userRepository.find();
   }
 
-  async findOne(phone: string): Promise<any | undefined> {
+  async findOne(username: string): Promise<any | undefined> {
     const arr = await this.getUsers();
-    return arr.find((user) => user.phone === phone);
+    return arr.find((user) => user.username === username);
   }
 }
